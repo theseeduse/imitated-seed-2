@@ -25,7 +25,6 @@ function jsdom(content) {
 
 const hostconfig = require('./hostconfig');
 const functions = require('./functions');
-const colors = cssColors.map(color => color.toLowerCase());
 
 for(var item in functions) global[item] = functions[item];
 
@@ -659,13 +658,14 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	}
 	data = document.querySelector('body').innerHTML.replace(/<br>/g, '\n');
 
-	// ruby 문법 515, 519~531 Line, newseed.xyz(op@newseed.xyz) all right reserved.
+	const colors = functions.cssColors.map(color => color.toLowerCase());
+
+	// ruby 문법 661~674 Line, newseed.xyz(op@newseed.xyz) all right reserved.
 	function ruby(text) {
         	const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\{?([^\}\)]+)\}?)?\)\]/g;
-        	const cssColors = functions.cssColors; // functions.js의 cssColors 변수 사용
 
         	return text.replace(rubyPattern, (match, kanji, furigana, color) => {
-            		if (color && cssColors.includes(color) || color && csscolors.includes(color)) {
+            		if (color && colors.includes(color)) {
                 		return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
             		} else {
                 		return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
