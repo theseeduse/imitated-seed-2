@@ -514,8 +514,8 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	
 	data += '\r\n';
 
-	data = ruby(data);
 	data = html.escape(data);
+	data = ruby(data);
 	const xref = flags.includes('backlinkinit');
 	
 // ruby 문법 515, 519~531 Line, newseed.xyz(op@newseed.xyz) all right reserved.
