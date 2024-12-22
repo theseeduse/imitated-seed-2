@@ -25,6 +25,8 @@ function jsdom(content) {
 
 const hostconfig = require('./hostconfig');
 const functions = require('./functions');
+const colors = cssColors.map(color => color.toLowerCase());
+
 for(var item in functions) global[item] = functions[item];
 
 const rHeadings = 
@@ -522,7 +524,7 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
         const cssColors = functions.cssColors; // functions.js의 cssColors 변수 사용
 
         return text.replace(rubyPattern, (match, kanji, furigana, color) => {
-            if (color && cssColors.includes(color) || color && cssColors.toLowerCase().includes(color)) {
+            if (color && cssColors.includes(color) || color && csscolors.includes(color)) {
                 return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
             } else {
                 return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
