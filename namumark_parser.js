@@ -660,19 +660,6 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 
 	const colors = functions.cssColors.map(color => color.toLowerCase());
 
-	// ruby 문법 661~674 Line, newseed.xyz(op@newseed.xyz) all right reserved.
-	function ruby(text) {
-        	const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\{?([^\}\)]+)\}?)?\)\]/g;
-
-        	return text.replace(rubyPattern, (match, kanji, furigana, color) => {
-            		if (color && colors.includes(color)) {
-                		return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
-            		} else {
-                		return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
-            		}
-        	});
-    	}
-
 	// 각주
 	var rdata = {}, tdata = {}, tdata2 = {};
 	function parseFootnotes() {
@@ -1042,6 +1029,20 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	for(let fpcm of (data.match(/\[pagecount\((((?!\)).)*)\)\]/gi) || [])) {
 		let pcm = fpcm.match(/\[pagecount\((((?!\)).)*)\)\]/i);
 		data = data.replace(fpcm, pgcnt[pcm[1]] === undefined ? pgcnta : pgcnt[pcm[1]]);
+	}
+
+		
+        // ruby 문법 1035~1046 Line, newseed.xyz(op@newseed.xyz) all right reserved.
+	function ruby(text) {
+        	const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\?([^\}\)]+)\?)?\)\]/g;
+
+        	return text.replace(rubyPattern, (match, kanji, furigana, color) => {
+            		if (color && colors.includes(color)) {
+                		return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
+            		} else {
+                		return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
+            		}
+        	});
 	}
 	
 	// 동화상
