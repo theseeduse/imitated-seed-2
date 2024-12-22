@@ -511,10 +511,24 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	root = root || title;
 	
 	data += '\r\n';
-	
+
+	data = ruby(data);
 	data = html.escape(data);
 	const xref = flags.includes('backlinkinit');
 	
+// ruby 문법 515, 519~531 Line, newseed.xyz(op@newseed.xyz) all right reserved.
+    function ruby(text) {
+        const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\{?([^\}\)]+)\}?)?\)\]/g;
+        const cssColors = functions.cssColors; // functions.js의 cssColors 변수 사용
+
+        return text.replace(rubyPattern, (match, kanji, furigana, color) => {
+            if (color && cssColors.includes(color) || color && cssColors.toLowerCase().includes(color)) {
+                return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
+            } else {
+                return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
+            }
+        });
+    }
 	// 역링크 초기화
 	if(xref)
 		await curs.execute("delete from backlink where title = ? and namespace = ?", [doc.title, doc.namespace]);
