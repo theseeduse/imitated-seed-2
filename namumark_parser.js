@@ -515,7 +515,8 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	data = ruby(data);
 	data = html.escape(data);
 	const xref = flags.includes('backlinkinit');
-// ruby 문법, newseed.xyz(op@newseed.xyz) all right reserved.
+	
+// ruby 문법 515, 519~531 Line, newseed.xyz(op@newseed.xyz) all right reserved.
     function ruby(text) {
         const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\{?([^\}\)]+)\}?)?\)\]/g;
         const cssColors = functions.cssColors; // functions.js의 cssColors 변수 사용
