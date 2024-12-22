@@ -515,15 +515,13 @@ module.exports = async function markdown(req, content, discussion = 0, title = '
 	data = ruby(data);
 	data = html.escape(data);
 	const xref = flags.includes('backlinkinit');
-
+// ruby 문법, newseed.xyz(op@newseed.xyz) all right reserved.
     function ruby(text) {
         const rubyPattern = /\[ruby\(([^,]+),\s*ruby=([^,\)]+)(?:,\s*color=?\{?([^\}\)]+)\}?)?\)\]/g;
         const cssColors = functions.cssColors; // functions.js의 cssColors 변수 사용
-        const cssColorsmalls = ['black', 'gray', 'grey', 'silver', 'white', 'red', 'maroon', 'yellow', 'olive', 'lime', 'green', 'aqua', 'cyan', 'teal', 'blue', 'navy', 'magenta', 'fuchsia', 'purple', 'dimgray', 'dimgrey', 'darkgray', 'darkgrey', 'lightgray', 'lightgrey', 'gainsboro', 'whitesmoke', 'brown', 'darkred', 'firebrick', 'indianred', 'lightcoral', 'rosybrown', 'snow', 'mistyrose', 'salmon', 'tomato', 'darksalmon', 'coral', 'orangered', 'lightsalmon', 'sienna', 'seashell', 'chocolate', 'saddlebrown', 'sandybrown', 'peachpuff', 'peru', 'linen', 'bisque', 'darkorange', 'burlywood', 'antiquewhite', 'tan', 'navajowhite', 'blanchedalmond', 'papayawhip', 'moccasin', 'orange', 'wheat', 'oldlace', 'floralwhite', 'darkgoldenrod', 'goldenrod', 'cornsilk', 'gold', 'khaki', 'lemonchiffon', 'palegoldenrod', 'darkkhaki', 'beige', 'ivory', 'lightgoldenrodyellow', 'lightyellow', 'olivedrab', 'yellowgreen', 'darkolivegreen', 'greenyellow', 'chartreuse', 'lawngreen', 'darkgreen', 'darkseagreen', 'forestgreen', 'honeydew', 'lightgreen', 'limegreen', 'palegreen', 'seagreen', 'mediumseagreen', 'springgreen', 'mintcream', 'mediumspringgreen', 'mediumaquamarine', 'aquamarine', 'turquoise', 'lightseagreen', 'mediumturquoise', 'azure', 'darkcyan', 'darkslategray', 'darkslategrey', 'lightcyan', 'paleturquoise', 'darkturquoise', 'cadetblue', 'powderblue', 'lightblue', 'deepskyblue', 'skyblue', 'lightskyblue', 'steelblue', 'aliceblue', 'dodgerblue', 'lightslategray', 'lightslategrey', 'slategray', 'slategrey', 'lightsteelblue', 'cornflowerblue', 'royalblue', 'darkblue', 'ghostwhite', 'lavender', 'mediumblue', 'midnightblue', 'slateblue', 'darkslateblue', 'mediumslateblue', 'mediumpurple', 'rebeccapurple', 'blueviolet', 'indigo', 'darkorchid', 'darkviolet', 'mediumorchid', 'darkmagenta', 'plum', 'thistle', 'violet', 'orchid', 'mediumvioletred', 'deeppink', 'hotpink', 'lavenderblush', 'palevioletred', 'crimson', 'pink', 'lightpink'];
-
 
         return text.replace(rubyPattern, (match, kanji, furigana, color) => {
-            if (color && cssColors.includes(color) || color && cssColorsmalls.includes(color)) {
+            if (color && cssColors.includes(color) || color && cssColors.toLowerCase().includes(color)) {
                 return `<ruby>${kanji}<rp>(</rp><rt style="color: ${color};">${furigana}</rt><rp>)</rp></ruby>`;
             } else {
                 return `<ruby>${kanji}<rp>(</rp><rt>${furigana}</rt><rp>)</rp></ruby>`;
